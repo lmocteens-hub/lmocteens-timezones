@@ -10,27 +10,20 @@
 
 <style>
 
-:root{
-    --bg:#0b0f14;
-    --card:#151b22;
-    --card-border:#2a3440;
-    --gold:#d9b26f;
-    --gold-soft:#f0d5a0;
-    --text:#f5f5f5;
-    --muted:#b7c0cb;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
+/* 🌌 GLOBAL BACKGROUND (FIXED + VISIBLE) */
 body{
-    background:linear-gradient(180deg,#0b0f14,#111821);
-    color:var(--text);
-    font-family:'Inter',sans-serif;
+    margin:0;
     min-height:100vh;
+    font-family:'Inter',sans-serif;
+    color:#f5f5f5;
+    overflow-x:hidden;
+
+    background:
+        radial-gradient(circle at 20% 20%, rgba(90,130,180,0.35), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(170,120,200,0.25), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(80,160,140,0.20), transparent 55%),
+        linear-gradient(180deg,#070a10,#0c141d);
+
     padding:50px 20px;
 }
 
@@ -39,6 +32,7 @@ body{
     margin:auto;
 }
 
+/* HERO */
 .hero{
     text-align:center;
     margin-bottom:50px;
@@ -53,38 +47,40 @@ body{
 
 .hero .subtitle{
     font-size:1.6rem;
-    color:var(--gold-soft);
-    margin-top:-10px;
+    color:#f0d5a0;
     font-style:italic;
 }
 
 .hero .description{
     margin-top:20px;
-    color:var(--muted);
+    color:#b7c0cb;
     font-size:1.05rem;
     line-height:1.7;
 }
 
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
     gap:28px;
 }
 
+/* CARD */
 .card{
-    background:var(--card);
-    border:1px solid var(--card-border);
+    background:rgba(21,27,34,0.92);
+    border:1px solid #2a3440;
     border-radius:24px;
     padding:28px;
+    backdrop-filter:blur(8px);
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
     transition:.25s ease;
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.35);
 }
 
 .card:hover{
     transform:translateY(-4px);
 }
 
+/* LOCATION */
 .location{
     display:flex;
     align-items:center;
@@ -92,20 +88,12 @@ body{
     margin-bottom:22px;
 }
 
-.flag{
-    font-size:2rem;
-}
+.flag{font-size:2rem;}
 
-.location h3{
-    font-size:1.2rem;
-    margin-bottom:4px;
-}
+.location h3{margin:0;font-size:1.2rem;}
+.zone{color:#b7c0cb;font-size:.92rem;}
 
-.zone{
-    color:var(--muted);
-    font-size:.92rem;
-}
-
+/* CLOCK */
 .clock-wrap{
     display:flex;
     justify-content:center;
@@ -124,16 +112,16 @@ body{
         0 10px 20px rgba(0,0,0,.4);
 }
 
+/* ✅ FIXED NUMBER CENTERING */
 .number{
     position:absolute;
     font-size:14px;
-    color:#222;
     font-weight:600;
-    left:50%;
-    top:50%;
-    transform-origin:center center;
+    color:#222;
+    transform:translate(-50%,-50%);
 }
 
+/* HANDS */
 .hand{
     position:absolute;
     left:50%;
@@ -141,25 +129,9 @@ body{
     transform-origin:bottom center;
 }
 
-.hour{
-    width:6px;
-    height:50px;
-    background:#111;
-    border-radius:10px;
-}
-
-.minute{
-    width:4px;
-    height:70px;
-    background:#111;
-    border-radius:10px;
-}
-
-.second{
-    width:2px;
-    height:82px;
-    background:#c98b2f;
-}
+.hour{width:6px;height:50px;background:#111;border-radius:10px;}
+.minute{width:4px;height:70px;background:#111;border-radius:10px;}
+.second{width:2px;height:82px;background:#c98b2f;}
 
 .center{
     width:12px;
@@ -172,20 +144,21 @@ body{
     transform:translate(-50%,-50%);
 }
 
+/* TEXT */
 .digital{
     text-align:center;
     font-size:2rem;
     font-weight:600;
-    color:var(--gold-soft);
+    color:#f0d5a0;
 }
 
 .date{
     text-align:center;
     margin-top:8px;
-    color:var(--muted);
-    line-height:1.5;
+    color:#b7c0cb;
 }
 
+/* FOOTER */
 .footer{
     margin-top:70px;
     text-align:center;
@@ -197,29 +170,20 @@ body{
 .footer small{
     display:block;
     margin-top:10px;
-    color:var(--muted);
+    color:#b7c0cb;
     font-style:normal;
 }
 
+/* RESPONSIVE */
 @media(max-width:700px){
-
-.hero h1{
-    font-size:3rem;
-}
-
-.hero .subtitle{
-    font-size:1.2rem;
-}
-
-.clock{
-    width:160px;
-    height:160px;
-}
-
+.hero h1{font-size:3rem;}
+.hero .subtitle{font-size:1.2rem;}
+.clock{width:160px;height:160px;}
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -227,9 +191,8 @@ body{
 <div class="hero">
     <h1>LMOC TEENS</h1>
     <div class="subtitle">Around the World</div>
-
     <div class="description">
-        No matter where we live, we are connected in Christ as one LMOC Teens family.
+        No matter where we live, we are connected in Christ as one global family.
     </div>
 </div>
 
@@ -245,55 +208,18 @@ body{
 <script>
 
 const zones = [
-
-{
-flag:"🇺🇸",
-name:"Pacific Time",
-subtitle:"Washington",
-timezone:"America/Los_Angeles"
-},
-
-{
-flag:"🇺🇸",
-name:"Central Time",
-subtitle:"United States",
-timezone:"America/Chicago"
-},
-
-{
-flag:"🇺🇸",
-name:"Eastern Time",
-subtitle:"Tennessee",
-timezone:"America/New_York"
-},
-
-{
-flag:"🇧🇷",
-name:"Brasília Time",
-subtitle:"Brazil",
-timezone:"America/Sao_Paulo"
-},
-
-{
-flag:"🇹🇿",
-name:"East Africa Time",
-subtitle:"Tanzania",
-timezone:"Africa/Dar_es_Salaam"
-},
-
-{
-flag:"🇩🇪🇫🇷",
-name:"Central European Time",
-subtitle:"Germany & France",
-timezone:"Europe/Berlin"
-}
-
+{flag:"🇺🇸",name:"Pacific Time",subtitle:"Washington",timezone:"America/Los_Angeles"},
+{flag:"🇺🇸",name:"Central Time",subtitle:"United States",timezone:"America/Chicago"},
+{flag:"🇺🇸",name:"Eastern Time",subtitle:"Tennessee",timezone:"America/New_York"},
+{flag:"🇧🇷",name:"Brasília Time",subtitle:"Brazil",timezone:"America/Sao_Paulo"},
+{flag:"🇹🇿",name:"East Africa Time",subtitle:"Tanzania",timezone:"Africa/Dar_es_Salaam"},
+{flag:"🇩🇪🇫🇷",name:"Central European Time",subtitle:"Germany & France",timezone:"Europe/Berlin"}
 ];
 
 const grid = document.getElementById("grid");
 
+/* BUILD CLOCKS */
 zones.forEach((zone,index)=>{
-
 grid.innerHTML += `
 <div class="card">
 
@@ -317,13 +243,11 @@ grid.innerHTML += `
 <div class="digital" id="digital-${index}"></div>
 <div class="date" id="date-${index}"></div>
 
-</div>
-`;
-
+</div>`;
 });
 
+/* 🔥 FIXED CLOCK NUMBER PLACEMENT */
 document.querySelectorAll(".clock").forEach(clock=>{
-
 for(let i=1;i<=12;i++){
 
 const num=document.createElement("div");
@@ -332,36 +256,33 @@ num.className="number";
 const angle=(i*30-90)*(Math.PI/180);
 const radius=70;
 
-num.style.left=
-50+Math.cos(angle)*radius+"px";
+/* correct center-based positioning */
+const x = 50 + Math.cos(angle)*radius;
+const y = 50 - Math.sin(angle)*radius;
 
-num.style.top=
-50+Math.sin(angle)*radius+"px";
+num.style.left = `${x}%`;
+num.style.top = `${y}%`;
 
 num.textContent=i;
 
 clock.appendChild(num);
-
 }
-
 });
 
+/* CLOCK UPDATE */
 function updateClocks(){
 
 zones.forEach((zone,index)=>{
 
 const now=new Date();
 
-const formatter=new Intl.DateTimeFormat(
-'en-US',
-{
+const formatter=new Intl.DateTimeFormat('en-US',{
 timeZone:zone.timezone,
 hour:'numeric',
 minute:'numeric',
 second:'numeric',
 hour12:true
-}
-);
+});
 
 const parts=formatter.formatToParts(now);
 
@@ -373,38 +294,20 @@ const hourDeg=(h%12)*30+(m*0.5);
 const minuteDeg=m*6;
 const secondDeg=s*6;
 
-document.getElementById(`hour-${index}`)
-.style.transform=
-`translateX(-50%) rotate(${hourDeg}deg)`;
+document.getElementById(`hour-${index}`).style.transform=`translateX(-50%) rotate(${hourDeg}deg)`;
+document.getElementById(`minute-${index}`).style.transform=`translateX(-50%) rotate(${minuteDeg}deg)`;
+document.getElementById(`second-${index}`).style.transform=`translateX(-50%) rotate(${secondDeg}deg)`;
 
-document.getElementById(`minute-${index}`)
-.style.transform=
-`translateX(-50%) rotate(${minuteDeg}deg)`;
+document.getElementById(`digital-${index}`).innerText =
+new Date().toLocaleTimeString('en-US',{timeZone:zone.timezone});
 
-document.getElementById(`second-${index}`)
-.style.transform=
-`translateX(-50%) rotate(${secondDeg}deg)`;
-
-document.getElementById(`digital-${index}`)
-.innerText=
-new Date().toLocaleTimeString(
-'en-US',
-{
-timeZone:zone.timezone
-}
-);
-
-document.getElementById(`date-${index}`)
-.innerHTML=
-new Date().toLocaleDateString(
-'en-US',
-{
+document.getElementById(`date-${index}`).innerText =
+new Date().toLocaleDateString('en-US',{
 timeZone:zone.timezone,
 weekday:'long',
 month:'long',
 day:'numeric'
-}
-);
+});
 
 });
 
