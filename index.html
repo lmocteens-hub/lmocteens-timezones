@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌙 CLEAN DARK BASE */
+/* 🌙 BACKGROUND */
 body{
     margin:0;
     min-height:100vh;
@@ -22,7 +22,7 @@ body{
         radial-gradient(circle at 50% 20%, #1a2430 0%, #0b0f14 60%, #070a0f 100%);
 }
 
-/* ✨ SCATTERED FAIRY LIGHT FIELD (RETURNED + IMPROVED) */
+/* ✨ LIGHTS */
 .lights{
     position:fixed;
     inset:0;
@@ -35,32 +35,26 @@ body{
     width:5px;
     height:5px;
     border-radius:50%;
-    background:rgba(255, 235, 170, 0.9);
+    background:rgba(255, 235, 170, 0.95);
     box-shadow:0 0 12px rgba(255,220,140,0.75);
     animation: twinkle 4s infinite ease-in-out;
 }
 
 @keyframes twinkle{
-    0%,100%{
-        opacity:0.25;
-        transform:translateY(0px) scale(0.9);
-    }
-    50%{
-        opacity:1;
-        transform:translateY(-6px) scale(1.1);
-    }
+    0%,100%{opacity:0.25; transform:translateY(0px) scale(0.9);}
+    50%{opacity:1; transform:translateY(-6px) scale(1.1);}
 }
 
-/* 🌿 LAYOUT (FIXED BREATHING ROOM) */
+/* LAYOUT */
 .container{
     max-width:1200px;
     margin:auto;
-    padding:34px 20px 50px; /* 🔥 restored vertical space */
+    padding:34px 20px 50px;
     position:relative;
-    z-index:1;
+    z-index:2;
 }
 
-/* 🌿 HERO (less scrunched, more presence) */
+/* HERO */
 .hero{
     text-align:center;
     margin-bottom:28px;
@@ -68,31 +62,30 @@ body{
 
 .hero h1{
     font-family:'Cormorant Garamond',serif;
-    font-size:4.2rem; /* slightly bigger again */
+    font-size:4.2rem;
     margin:0;
-    letter-spacing:1px;
 }
 
 .hero .subtitle{
-    font-size:1.35rem; /* restored readability */
+    font-size:1.35rem;
     margin-top:6px;
     color:#cfe3d6;
 }
 
 .hero .description{
-    font-size:1rem; /* slightly larger again */
+    font-size:1rem;
     margin-top:10px;
     color:#b8c7bf;
 }
 
-/* 🌍 GRID */
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
     gap:20px;
 }
 
-/* 🪵 CARD */
+/* CARD */
 .card{
     background:rgba(15,20,18,0.88);
     border:1px solid rgba(140,180,150,0.20);
@@ -100,7 +93,7 @@ body{
     padding:20px;
 }
 
-/* 🕰 CLOCK */
+/* CLOCK */
 .clock{
     width:168px;
     height:168px;
@@ -158,7 +151,7 @@ body{
     color:#bfcfc7;
 }
 
-/* CONVERTER */
+/* 🧭 CONVERTER (VERSION B) */
 .converter{
     margin-top:40px;
     padding:18px;
@@ -174,11 +167,14 @@ select{
     border:none;
     background:#f7f2e9;
     font-weight:600;
+    margin:5px;
 }
 
 .result{
-    margin-top:10px;
+    margin-top:12px;
     color:#c6d3c9;
+    line-height:1.6;
+    font-size:0.95rem;
 }
 
 /* FOOTER */
@@ -195,7 +191,7 @@ select{
 
 <body>
 
-<!-- ✨ SCATTERED LIGHT FIELD -->
+<!-- ✨ LIGHTS -->
 <div class="lights" id="lights"></div>
 
 <div class="container">
@@ -208,10 +204,13 @@ select{
 
 <div class="grid" id="grid"></div>
 
+<!-- 🧭 CONVERTER -->
 <div class="converter">
-    <select id="from"></select>
-    →
-    <select id="to"></select>
+    <div>
+        <select id="from"></select>
+        →
+        <select id="to"></select>
+    </div>
     <div class="result" id="result"></div>
 </div>
 
@@ -232,28 +231,19 @@ const zones = [
 {flag:"🇩🇪",name:"Europe",timezone:"Europe/Berlin"}
 ];
 
-/* ✨ SCATTERED LIGHT GENERATION (BACK TO “AIRMOSPHERE”) */
+/* ✨ LIGHTS */
 const lights=document.getElementById("lights");
 
-for(let i=0;i<45;i++){
+for(let i=0;i<55;i++){
 const l=document.createElement("div");
 l.className="light";
-
-/* more natural scatter */
 l.style.left=Math.random()*100+"%";
 l.style.top=Math.random()*100+"%";
-
-/* depth variation */
-const scale=0.6 + Math.random()*1.4;
-l.style.transform=`scale(${scale})`;
-
 l.style.opacity=0.2 + Math.random()*0.8;
-
-/* staggered animation */
+l.style.transform=`scale(${0.6 + Math.random()*1.4})`;
 l.style.animationDelay=Math.random()*4+"s";
-
 lights.appendChild(l);
-});
+}
 
 /* CLOCKS */
 const grid=document.getElementById("grid");
@@ -297,7 +287,7 @@ clock.appendChild(n);
 });
 }
 
-/* UPDATE */
+/* CLOCK UPDATE */
 function update(){
 zones.forEach((z,i)=>{
 
@@ -317,9 +307,14 @@ const h=+p.find(x=>x.type==="hour").value;
 const m=+p.find(x=>x.type==="minute").value;
 const s=+p.find(x=>x.type==="second").value;
 
-document.getElementById(`h-${i}`).style.transform=`translateX(-50%) rotate(${(h%12)*30+m*0.5}deg)`;
-document.getElementById(`m-${i}`).style.transform=`translateX(-50%) rotate(${m*6}deg)`;
-document.getElementById(`s-${i}`).style.transform=`translateX(-50%) rotate(${s*6}deg)`;
+document.getElementById(`h-${i}`).style.transform=
+`translateX(-50%) rotate(${(h%12)*30+m*0.5}deg)`;
+
+document.getElementById(`m-${i}`).style.transform=
+`translateX(-50%) rotate(${m*6}deg)`;
+
+document.getElementById(`s-${i}`).style.transform=
+`translateX(-50%) rotate(${s*6}deg)`;
 
 document.getElementById(`d-${i}`).innerText =
 new Date().toLocaleTimeString('en-US',{
@@ -340,10 +335,68 @@ day:'numeric'
 });
 }
 
+/* 🧭 CONVERTER (VERSION B LOGIC) */
+function initConverter(){
+
+const from=document.getElementById("from");
+const to=document.getElementById("to");
+
+zones.forEach((z,i)=>{
+from.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
+to.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
+});
+
+from.value=0;
+to.value=4;
+
+function convert(){
+
+const f=zones[from.value];
+const t=zones[to.value];
+
+const now=new Date();
+
+const a=new Date(now.toLocaleString("en-US",{timeZone:f.timezone}));
+const b=new Date(now.toLocaleString("en-US",{timeZone:t.timezone}));
+
+let diff=(b-a)/(1000*60*60);
+if(diff>12) diff-=24;
+if(diff<-12) diff+=24;
+
+/* formatted times */
+const timeA=new Date().toLocaleTimeString('en-US',{
+timeZone:f.timezone,
+hour:'numeric',
+minute:'2-digit',
+hour12:true
+});
+
+const timeB=new Date().toLocaleTimeString('en-US',{
+timeZone:t.timezone,
+hour:'numeric',
+minute:'2-digit',
+hour12:true
+});
+
+document.getElementById("result").innerHTML=
+`
+<div>${f.flag} <b>${f.name}</b>: ${timeA}</div>
+<div>${t.flag} <b>${t.name}</b>: ${timeB}</div>
+<div style="margin-top:6px;"><b>Difference:</b> ${diff>=0?"+":""}${diff.toFixed(1)} hours</div>
+`;
+}
+
+from.addEventListener("change",convert);
+to.addEventListener("change",convert);
+
+convert();
+}
+
 /* INIT */
 window.onload=()=>{
 placeNumbers();
 update();
+initConverter();
 };
 
 setInterval(update,60000);
