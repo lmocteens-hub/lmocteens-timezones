@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌿 NATURAL FOREST BACKGROUND */
+/* 🌿 CLEAN NATURAL BACKGROUND (NO BLUR FOG) */
 body{
     margin:0;
     min-height:100vh;
@@ -19,21 +19,21 @@ body{
     overflow-x:hidden;
 
     background:
-        radial-gradient(circle at 20% 20%, rgba(120,180,140,0.25), transparent 45%),
-        radial-gradient(circle at 80% 30%, rgba(160,200,170,0.18), transparent 50%),
-        radial-gradient(circle at 50% 80%, rgba(90,140,110,0.20), transparent 55%),
-        linear-gradient(180deg,#060a08,#0b1410);
+        radial-gradient(circle at 20% 20%, rgba(120,180,140,0.20), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(160,200,170,0.14), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(90,140,110,0.16), transparent 55%),
+        linear-gradient(180deg,#070c09,#0d1611);
 }
 
-/* soft leaf-light movement */
+/* subtle light movement (VERY light, no blur) */
 body::before{
     content:"";
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04), transparent 60%),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03), transparent 65%);
-    animation: drift 20s ease-in-out infinite alternate;
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.02), transparent 60%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.02), transparent 65%);
+    animation: drift 22s ease-in-out infinite alternate;
     pointer-events:none;
 }
 
@@ -88,7 +88,6 @@ body::before{
     border:1px solid rgba(120,160,130,0.25);
     border-radius:24px;
     padding:28px;
-    backdrop-filter:blur(10px);
     box-shadow:0 10px 30px rgba(0,0,0,.35);
     transition:.25s ease;
     overflow:hidden;
@@ -96,31 +95,6 @@ body::before{
 
 .card:hover{
     transform:translateY(-4px);
-}
-
-/* 🌗 DAY/NIGHT */
-.card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    opacity:0;
-    transition:opacity 0.8s ease;
-    pointer-events:none;
-}
-
-.card.day::before{
-    background:radial-gradient(circle at top, rgba(255,230,170,0.10), transparent 70%);
-    opacity:1;
-}
-
-.card.sunset::before{
-    background:radial-gradient(circle at top, rgba(255,170,120,0.12), transparent 70%);
-    opacity:1;
-}
-
-.card.night::before{
-    background:radial-gradient(circle at top, rgba(120,160,255,0.10), transparent 70%);
-    opacity:1;
 }
 
 /* LOCATION */
@@ -155,7 +129,7 @@ body::before{
         0 10px 20px rgba(0,0,0,.4);
 }
 
-/* 🧭 PERFECT CENTER NUMBER PLACEMENT */
+/* 🧭 FIXED NUMBER STYLE */
 .number{
     position:absolute;
     font-size:14px;
@@ -263,10 +237,10 @@ const zones = [
 
 const grid = document.getElementById("grid");
 
-/* BUILD */
+/* BUILD CARDS */
 zones.forEach((zone,index)=>{
 grid.innerHTML += `
-<div class="card" id="card-${index}">
+<div class="card">
 
 <div class="location">
 <div class="flag">${zone.flag}</div>
@@ -291,41 +265,39 @@ grid.innerHTML += `
 </div>`;
 });
 
-/* 🧭 PERFECT CLOCK NUMBERS (true geometric placement) */
+/* 🧭 PERFECT CLOCK NUMBER POSITIONING (FIXED + STABLE) */
+function positionNumbers(){
+
 document.querySelectorAll(".clock").forEach(clock=>{
 
-const size = clock.offsetWidth;
-const center = size / 2;
-const radius = center * 0.78;
+    // remove old numbers if any
+    clock.querySelectorAll(".number").forEach(n=>n.remove());
 
-for(let i=1;i<=12;i++){
+    const size = clock.clientWidth;
+    const center = size / 2;
+    const radius = center * 0.78;
 
-const num=document.createElement("div");
-num.className="number";
+    for(let i=1;i<=12;i++){
 
-/* FIXED: true clock geometry */
-const angle = ((i - 3) * 30) * (Math.PI / 180);
+        const num=document.createElement("div");
+        num.className="number";
 
-const x = center + Math.cos(angle) * radius;
-const y = center + Math.sin(angle) * radius;
+        const angle = ((i - 3) * 30) * (Math.PI / 180);
 
-num.style.left = `${x}px`;
-num.style.top = `${y}px`;
+        const x = center + Math.cos(angle) * radius;
+        const y = center + Math.sin(angle) * radius;
 
-num.textContent = i;
+        num.style.left = `${x}px`;
+        num.style.top = `${y}px`;
 
-clock.appendChild(num);
-}
+        num.textContent = i;
+
+        clock.appendChild(num);
+    }
 });
-
-/* 🌗 DAY / NIGHT DETECTION */
-function getTimeState(hour){
-    if(hour >= 6 && hour < 16) return "day";
-    if(hour >= 16 && hour < 19) return "sunset";
-    return "night";
 }
 
-/* CLOCKS */
+/* CLOCK UPDATE */
 function updateClocks(){
 
 zones.forEach((zone,index)=>{
@@ -370,18 +342,21 @@ month:'long',
 day:'numeric'
 });
 
-/* 🌗 APPLY DAY/NIGHT */
-const state = getTimeState(h);
-
-const card = document.getElementById(`card-${index}`);
-card.classList.remove("day","sunset","night");
-card.classList.add(state);
-
 });
 
 }
 
-updateClocks();
+/* IMPORTANT: wait for full layout */
+window.addEventListener("load", () => {
+    positionNumbers();
+    updateClocks();
+});
+
+/* responsive safety */
+window.addEventListener("resize", () => {
+    positionNumbers();
+});
+
 setInterval(updateClocks,1000);
 
 </script>
