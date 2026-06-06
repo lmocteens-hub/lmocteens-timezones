@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌙 CLEAN DARK CANVAS (NO IMAGE) */
+/* 🌙 CLEAN NIGHT BASE */
 body{
     margin:0;
     min-height:100vh;
@@ -22,94 +22,97 @@ body{
         radial-gradient(circle at 50% 20%, #1a2430 0%, #0b0f14 60%, #070a0f 100%);
 }
 
-/* 🌟 FAIRY LIGHT STRING (REAL ANIMATION NOW) */
+/* ✨ STRING LIGHTS (MORE “HUNG” FEEL) */
 .lights{
     position:fixed;
     top:0;
     left:0;
     width:100%;
-    height:120px;
+    height:140px;
     pointer-events:none;
     z-index:0;
 }
 
 .light{
     position:absolute;
-    width:6px;
-    height:6px;
+    width:5px;
+    height:5px;
     border-radius:50%;
-    background:rgba(255, 230, 170, 0.9);
-    box-shadow:0 0 10px rgba(255,220,140,0.8);
-    animation: twinkle 3s infinite ease-in-out;
+    background:rgba(255, 235, 170, 0.9);
+    box-shadow:0 0 12px rgba(255,220,140,0.7);
+    animation: twinkle 4s infinite ease-in-out;
 }
 
 @keyframes twinkle{
-    0%,100%{opacity:0.3; transform:translateY(0px);}
+    0%,100%{opacity:0.25; transform:translateY(0px);}
     50%{opacity:1; transform:translateY(6px);}
 }
 
-/* LAYOUT */
+/* 🌿 LAYOUT */
 .container{
-    max-width:1400px;
+    max-width:1200px;
     margin:auto;
-    padding:18px 20px 50px 20px;
+    padding:16px 20px 40px;
     position:relative;
     z-index:1;
 }
 
-/* HERO */
+/* HERO (slightly tighter) */
 .hero{
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .hero h1{
     font-family:'Cormorant Garamond',serif;
-    font-size:4rem;
+    font-size:3.6rem;
     margin:0;
+    letter-spacing:1px;
 }
 
 .hero .subtitle{
-    font-size:1.2rem;
-    margin-top:5px;
+    font-size:1.1rem;
+    margin-top:4px;
     color:#cfe3d6;
 }
 
 .hero .description{
-    font-size:0.95rem;
+    font-size:0.9rem;
     color:#b8c7bf;
+    margin-top:6px;
 }
 
 /* GRID */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-    gap:22px;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:18px;
 }
 
 /* CARD */
 .card{
     background:rgba(15,20,18,0.88);
-    border:1px solid rgba(140,180,150,0.22);
-    border-radius:22px;
-    padding:20px;
+    border:1px solid rgba(140,180,150,0.20);
+    border-radius:20px;
+    padding:18px;
 }
 
 /* CLOCK */
 .clock{
-    width:170px;
-    height:170px;
+    width:165px;
+    height:165px;
+    margin:auto;
     background:#f7f2e9;
     border-radius:50%;
     position:relative;
-    margin:auto;
-    border:7px solid #c8b48a;
+    border:6px solid #c8b48a;
+    box-shadow:inset 0 0 10px rgba(0,0,0,.2);
 }
 
 /* NUMBERS */
 .number{
     position:absolute;
-    font-size:13px;
+    font-size:12px;
     font-weight:600;
     color:#222;
     transform:translate(-50%,-50%);
@@ -123,9 +126,9 @@ body{
     transform-origin:bottom center;
 }
 
-.hour{width:5px;height:45px;background:#111;}
-.minute{width:4px;height:62px;background:#111;}
-.second{width:2px;height:75px;background:#c98b2f;}
+.hour{width:5px;height:42px;background:#111;}
+.minute{width:4px;height:58px;background:#111;}
+.second{width:2px;height:72px;background:#c98b2f;}
 
 .center{
     width:10px;
@@ -141,23 +144,24 @@ body{
 /* TEXT */
 .digital{
     text-align:center;
-    font-size:1.5rem;
+    font-size:1.4rem;
     color:#e6d3a8;
+    margin-top:8px;
 }
 
 .date{
     text-align:center;
+    font-size:0.85rem;
     color:#bfcfc7;
-    font-size:0.9rem;
 }
 
-/* CONVERTER */
+/* CONVERTER FIXED */
 .converter{
-    margin-top:45px;
-    padding:18px;
-    border-radius:16px;
+    margin-top:35px;
+    padding:16px;
+    border-radius:14px;
     background:rgba(15,20,18,0.72);
-    border:1px solid rgba(140,180,150,0.2);
+    border:1px solid rgba(140,180,150,0.18);
     text-align:center;
 }
 
@@ -172,15 +176,16 @@ select{
 .result{
     margin-top:10px;
     color:#c6d3c9;
+    font-size:0.95rem;
 }
 
 /* FOOTER */
 .footer{
-    margin-top:50px;
+    margin-top:40px;
     text-align:center;
     color:#e6d3a8;
     font-style:italic;
-    font-size:0.95rem;
+    font-size:0.9rem;
 }
 
 </style>
@@ -188,7 +193,7 @@ select{
 
 <body>
 
-<!-- 🌟 FAIRY LIGHTS -->
+<!-- ✨ LIGHTS -->
 <div class="lights" id="lights"></div>
 
 <div class="container">
@@ -225,20 +230,19 @@ const zones = [
 {flag:"🇩🇪",name:"Europe",timezone:"Europe/Berlin"}
 ];
 
-/* 🌟 FAIRY LIGHT GENERATOR */
+/* ✨ LIGHTS (BETTER STRUCTURE) */
 const lights=document.getElementById("lights");
 
-for(let i=0;i<25;i++){
-const d=document.createElement("div");
-d.className="light";
-d.style.left=Math.random()*100+"%";
-d.style.top=Math.random()*100+"px";
-d.style.animationDelay=Math.random()*3+"s";
-d.style.opacity=Math.random();
-lights.appendChild(d);
+for(let i=0;i<28;i++){
+const l=document.createElement("div");
+l.className="light";
+l.style.left=(i*(100/28))+"%";
+l.style.top=(Math.sin(i)*18 + 30)+"px";
+l.style.animationDelay=(i*0.12)+"s";
+lights.appendChild(l);
 }
 
-/* BUILD CLOCKS */
+/* CLOCKS */
 const grid=document.getElementById("grid");
 
 zones.forEach((z,i)=>{
@@ -280,11 +284,12 @@ clock.appendChild(n);
 });
 }
 
-/* UPDATE */
+/* UPDATE CLOCKS */
 function update(){
 zones.forEach((z,i)=>{
 
 const now=new Date();
+
 const f=new Intl.DateTimeFormat('en-US',{
 timeZone:z.timezone,
 hour:'numeric',
@@ -303,19 +308,65 @@ document.getElementById(`h-${i}`).style.transform=`translateX(-50%) rotate(${(h%
 document.getElementById(`m-${i}`).style.transform=`translateX(-50%) rotate(${m*6}deg)`;
 document.getElementById(`s-${i}`).style.transform=`translateX(-50%) rotate(${s*6}deg)`;
 
-document.getElementById(`d-${i}`).innerText=
-new Date().toLocaleTimeString('en-US',{timeZone:z.timezone,hour:'numeric',minute:'2-digit',hour12:true});
+document.getElementById(`d-${i}`).innerText =
+new Date().toLocaleTimeString('en-US',{
+timeZone:z.timezone,
+hour:'numeric',
+minute:'2-digit',
+hour12:true
+});
 
-document.getElementById(`date-${i}`).innerText=
-new Date().toLocaleDateString('en-US',{timeZone:z.timezone,weekday:'long',month:'long',day:'numeric'});
+document.getElementById(`date-${i}`).innerText =
+new Date().toLocaleDateString('en-US',{
+timeZone:z.timezone,
+weekday:'long',
+month:'long',
+day:'numeric'
+});
 
 });
+}
+
+/* CONVERTER FIX (THIS WAS THE BREAKPOINT) */
+function initConverter(){
+const from=document.getElementById("from");
+const to=document.getElementById("to");
+
+zones.forEach((z,i)=>{
+from.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
+to.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
+});
+
+from.value=0;
+to.value=4;
+
+function convert(){
+const f=zones[from.value];
+const t=zones[to.value];
+
+const now=new Date();
+const a=new Date(now.toLocaleString("en-US",{timeZone:f.timezone}));
+const b=new Date(now.toLocaleString("en-US",{timeZone:t.timezone}));
+
+let diff=(b-a)/(1000*60*60);
+if(diff>12) diff-=24;
+if(diff<-12) diff+=24;
+
+document.getElementById("result").innerHTML=
+`${f.flag} ${f.name} → ${t.flag} ${t.name} <br><b>${diff>=0?"+":""}${diff.toFixed(1)} hours</b>`;
+}
+
+from.addEventListener("change",convert);
+to.addEventListener("change",convert);
+
+convert();
 }
 
 /* INIT */
 window.onload=()=>{
 placeNumbers();
 update();
+initConverter();
 };
 
 setInterval(update,60000);
