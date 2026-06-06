@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌌 AURORA / SPACE BACKGROUND */
+/* 🌐 PROFESSIONAL GLOBAL DASHBOARD BACKGROUND */
 body{
     margin:0;
     min-height:100vh;
@@ -19,30 +19,40 @@ body{
     overflow-x:hidden;
 
     background:
-        radial-gradient(circle at 10% 20%, rgba(0,255,200,0.12), transparent 40%),
-        radial-gradient(circle at 90% 30%, rgba(140,90,255,0.16), transparent 45%),
-        radial-gradient(circle at 50% 80%, rgba(255,170,80,0.10), transparent 50%),
-        linear-gradient(180deg,#05070c,#0b1220);
+        linear-gradient(180deg,#070a12,#0b1220);
 }
 
-/* subtle moving glow layer */
+/* subtle grid layer */
 body::before{
     content:"";
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05), transparent 60%),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 65%);
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:60px 60px;
+    opacity:0.15;
+    pointer-events:none;
+}
+
+/* moving aurora layer */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(0,255,200,0.10), transparent 45%),
+        radial-gradient(circle at 80% 40%, rgba(160,100,255,0.12), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(255,180,100,0.08), transparent 55%);
     animation: drift 18s ease-in-out infinite alternate;
     pointer-events:none;
 }
 
 @keyframes drift{
     from{transform:translate(-1%, -1%) scale(1);}
-    to{transform:translate(2%, 2%) scale(1.08);}
+    to{transform:translate(2%, 2%) scale(1.05);}
 }
 
-/* layout */
 .container{
     max-width:1400px;
     margin:auto;
@@ -87,7 +97,7 @@ body::before{
     border:1px solid #2a3440;
     border-radius:24px;
     padding:28px;
-    backdrop-filter:blur(8px);
+    backdrop-filter:blur(10px);
     box-shadow:0 10px 30px rgba(0,0,0,.35);
     transition:.25s ease;
 }
@@ -128,7 +138,7 @@ body::before{
         0 10px 20px rgba(0,0,0,.4);
 }
 
-/* numbers */
+/* numbers (FIXED CLOCK ORIENTATION) */
 .number{
     position:absolute;
     font-size:14px;
@@ -235,7 +245,7 @@ const zones = [
 
 const grid = document.getElementById("grid");
 
-/* build cards */
+/* build UI */
 zones.forEach((zone,index)=>{
 grid.innerHTML += `
 <div class="card">
@@ -263,32 +273,33 @@ grid.innerHTML += `
 </div>`;
 });
 
-/* 🔥 FIXED CLOCK NUMBER PLACEMENT (correct radius + centering) */
+/* 🌍 FIXED CLOCK NUMBER ORIENTATION */
 document.querySelectorAll(".clock").forEach(clock=>{
-    const size = clock.offsetWidth;
-    const radius = size * 0.38;
 
-    for(let i=1;i<=12;i++){
+for(let i=1;i<=12;i++){
 
-        const num=document.createElement("div");
-        num.className="number";
+const num=document.createElement("div");
+num.className="number";
 
-        const angle=(i*30-90)*(Math.PI/180);
+/* FIX: correct upright clock orientation */
+const angle = ((i - 3) * 30) * (Math.PI / 180);
 
-        const x = 50 + Math.cos(angle) * (radius / (size/2)) * 50;
-        const y = 50 - Math.sin(angle) * (radius / (size/2)) * 50;
+const radius = 70;
 
-        num.style.left = `${x}%`;
-        num.style.top = `${y}%`;
-        num.style.transform = "translate(-50%,-50%)";
+const x = 50 + Math.cos(angle) * radius;
+const y = 50 + Math.sin(angle) * radius;
 
-        num.textContent=i;
+num.style.left = `${x}%`;
+num.style.top = `${y}%`;
 
-        clock.appendChild(num);
-    }
+num.textContent = i;
+
+clock.appendChild(num);
+}
+
 });
 
-/* clocks */
+/* CLOCK UPDATE */
 function updateClocks(){
 
 zones.forEach((zone,index)=>{
