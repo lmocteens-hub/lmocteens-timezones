@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌿 BACKGROUND */
+/* 🌲 REAL IMAGE BACKGROUND (NO BLUR, NO GRADIENT STACKING) */
 body{
     margin:0;
     min-height:100vh;
@@ -18,21 +18,13 @@ body{
     color:#f5f5f5;
     overflow-x:hidden;
 
-    background:
-        radial-gradient(circle at 20% 20%, rgba(120,180,140,0.20), transparent 45%),
-        radial-gradient(circle at 80% 30%, rgba(160,200,170,0.14), transparent 50%),
-        radial-gradient(circle at 50% 80%, rgba(90,140,110,0.16), transparent 55%),
-        linear-gradient(180deg,#070c09,#0d1611);
-}
+    background-image:
+        linear-gradient(rgba(10,14,10,0.65), rgba(10,14,10,0.75)),
+        url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e");
 
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.02), transparent 60%),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.02), transparent 65%);
-    pointer-events:none;
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
 }
 
 /* LAYOUT */
@@ -62,7 +54,7 @@ body::before{
 
 .hero .description{
     margin-top:20px;
-    color:#b7c0cb;
+    color:#c7d2cc;
 }
 
 /* GRID */
@@ -74,7 +66,7 @@ body::before{
 
 /* CARD */
 .card{
-    background:rgba(20,28,24,0.88);
+    background:rgba(20,28,24,0.85);
     border:1px solid rgba(120,160,130,0.25);
     border-radius:24px;
     padding:28px;
@@ -90,6 +82,7 @@ body::before{
 }
 
 .flag{font-size:2rem;}
+
 .zone{color:#c6d3c9;font-size:.92rem;}
 
 /* CLOCK */
@@ -109,6 +102,7 @@ body::before{
     box-shadow:inset 0 0 12px rgba(0,0,0,.2), 0 10px 20px rgba(0,0,0,.4);
 }
 
+/* NUMBERS */
 .number{
     position:absolute;
     font-size:14px;
@@ -117,11 +111,13 @@ body::before{
     transform:translate(-50%,-50%);
 }
 
+/* HANDS */
 .hand{
     position:absolute;
     left:50%;
     bottom:50%;
     transform-origin:bottom center;
+    transition:transform 0.35s cubic-bezier(.4,2,.3,1);
 }
 
 .hour{width:6px;height:50px;background:#111;}
@@ -148,10 +144,10 @@ body::before{
 
 .date{
     text-align:center;
-    color:#b7c0cb;
+    color:#c7d2cc;
 }
 
-/* 🌍 CONVERTER */
+/* CONVERTER */
 .converter{
     margin-top:60px;
     padding:22px;
@@ -159,20 +155,6 @@ body::before{
     background:rgba(20,28,24,0.65);
     border:1px solid rgba(120,160,130,0.25);
     text-align:center;
-}
-
-.converter-title{
-    font-size:1.2rem;
-    color:#e6d3a8;
-    margin-bottom:12px;
-}
-
-.converter-row{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
 }
 
 select{
@@ -193,7 +175,7 @@ select{
 .footer{
     margin-top:70px;
     text-align:center;
-    color:#d8c8aa;
+    color:#e6d3a8;
     font-style:italic;
 }
 
@@ -207,20 +189,18 @@ select{
 <div class="hero">
     <h1>LMOC TEENS</h1>
     <div class="subtitle">Around the World</div>
-    <div class="description">One family, many time zones 🌍</div>
+    <div class="description">Many Timezones Connected in Christ 🌍</div>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<!-- 🌍 CONVERTER -->
+<!-- CONVERTER -->
 <div class="converter">
     <div class="converter-title">Quick Time Converter</div>
 
-    <div class="converter-row">
-        <select id="from"></select>
-        <span>→</span>
-        <select id="to"></select>
-    </div>
+    <select id="from"></select>
+    →
+    <select id="to"></select>
 
     <div class="result" id="result"></div>
 </div>
@@ -242,7 +222,7 @@ const zones = [
 {flag:"🇩🇪",name:"Europe",timezone:"Europe/Berlin"}
 ];
 
-/* BUILD CLOCKS */
+/* BUILD */
 const grid = document.getElementById("grid");
 
 zones.forEach((z,i)=>{
@@ -296,17 +276,22 @@ clock.appendChild(n);
 });
 }
 
-/* CLOCKS */
+/* CLOCK UPDATE (NO SECOND STRESS IN DISPLAY) */
 function update(){
 zones.forEach((z,i)=>{
 
 const now=new Date();
+
 const f=new Intl.DateTimeFormat('en-US',{
 timeZone:z.timezone,
-hour:'numeric',minute:'numeric',second:'numeric',hour12:true
+hour:'numeric',
+minute:'numeric',
+second:'numeric',
+hour12:true
 });
 
 const p=f.formatToParts(now);
+
 const h=+p.find(x=>x.type==="hour").value;
 const m=+p.find(x=>x.type==="minute").value;
 const s=+p.find(x=>x.type==="second").value;
@@ -315,11 +300,23 @@ document.getElementById(`h-${i}`).style.transform=`translateX(-50%) rotate(${(h%
 document.getElementById(`m-${i}`).style.transform=`translateX(-50%) rotate(${m*6}deg)`;
 document.getElementById(`s-${i}`).style.transform=`translateX(-50%) rotate(${s*6}deg)`;
 
-document.getElementById(`d-${i}`).innerText=
-new Date().toLocaleTimeString('en-US',{timeZone:z.timezone});
+/* digital: UPDATE EVERY MINUTE FEEL (no flashing seconds focus) */
+document.getElementById(`d-${i}`).innerText =
+new Date().toLocaleTimeString('en-US',{
+timeZone:z.timezone,
+hour:'numeric',
+minute:'2-digit',
+hour12:true
+});
 
-document.getElementById(`date-${i}`).innerText=
-new Date().toLocaleDateString('en-US',{timeZone:z.timezone,weekday:'long',month:'long',day:'numeric'});
+document.getElementById(`date-${i}`).innerText =
+new Date().toLocaleDateString('en-US',{
+timeZone:z.timezone,
+weekday:'long',
+month:'long',
+day:'numeric'
+});
+
 });
 }
 
@@ -350,10 +347,9 @@ let diff=(tt-ft)/(1000*60*60);
 if(diff>12) diff-=24;
 if(diff<-12) diff+=24;
 
-document.getElementById("result").innerHTML=`
-<b>${f.flag} ${f.name}</b> → <b>${t.flag} ${t.name}</b><br>
-Difference: ${diff>=0?"+":""}${diff.toFixed(1)} hours
-`;
+document.getElementById("result").innerHTML=
+`${f.flag} ${f.name} → ${t.flag} ${t.name}<br>
+<b>${diff>=0?"+":""}${diff.toFixed(1)} hours</b>`;
 }
 
 /* INIT */
@@ -367,7 +363,7 @@ convert();
 setInterval(()=>{
 update();
 convert();
-},1000);
+},60000);
 
 document.addEventListener("change",e=>{
 if(e.target.id==="from"||e.target.id==="to") convert();
