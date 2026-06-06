@@ -10,7 +10,7 @@
 
 <style>
 
-/* 🌲 BACKGROUND */
+/* 🌙 CLEAN DARK CANVAS (NO IMAGE) */
 body{
     margin:0;
     min-height:100vh;
@@ -19,53 +19,45 @@ body{
     overflow-x:hidden;
 
     background:
-        linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
-        url("https://images.pexels.com/photos/1671324/pexels-photo-1671324.jpeg");
-
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
+        radial-gradient(circle at 50% 20%, #1a2430 0%, #0b0f14 60%, #070a0f 100%);
 }
 
-/* ✨ FAIRY LIGHT STRING ANIMATION */
-body::before{
-    content:"";
+/* 🌟 FAIRY LIGHT STRING (REAL ANIMATION NOW) */
+.lights{
     position:fixed;
-    inset:0;
+    top:0;
+    left:0;
+    width:100%;
+    height:120px;
     pointer-events:none;
-
-    background:
-        radial-gradient(circle at 10% 12%, rgba(255,230,160,0.22), transparent 20%),
-        radial-gradient(circle at 20% 8%, rgba(255,210,130,0.18), transparent 22%),
-        radial-gradient(circle at 35% 10%, rgba(255,240,190,0.20), transparent 20%),
-        radial-gradient(circle at 50% 7%, rgba(255,220,140,0.18), transparent 22%),
-        radial-gradient(circle at 65% 11%, rgba(255,245,200,0.17), transparent 20%),
-        radial-gradient(circle at 80% 9%, rgba(255,215,130,0.19), transparent 22%),
-        radial-gradient(circle at 92% 12%, rgba(255,235,170,0.18), transparent 20%);
-
-    animation: floatLights 6s ease-in-out infinite alternate;
+    z-index:0;
 }
 
-/* gentle drifting motion */
-@keyframes floatLights{
-    0%{
-        transform:translateY(0px);
-        opacity:0.85;
-    }
-    100%{
-        transform:translateY(8px);
-        opacity:1;
-    }
+.light{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:rgba(255, 230, 170, 0.9);
+    box-shadow:0 0 10px rgba(255,220,140,0.8);
+    animation: twinkle 3s infinite ease-in-out;
 }
 
-/* 🌿 LAYOUT (FIXED TOP SPACE ISSUE) */
+@keyframes twinkle{
+    0%,100%{opacity:0.3; transform:translateY(0px);}
+    50%{opacity:1; transform:translateY(6px);}
+}
+
+/* LAYOUT */
 .container{
     max-width:1400px;
     margin:auto;
     padding:18px 20px 50px 20px;
+    position:relative;
+    z-index:1;
 }
 
-/* HERO (compact) */
+/* HERO */
 .hero{
     text-align:center;
     margin-bottom:20px;
@@ -79,15 +71,13 @@ body::before{
 
 .hero .subtitle{
     font-size:1.2rem;
-    font-style:italic;
     margin-top:5px;
-    color:#d7e7d8;
+    color:#cfe3d6;
 }
 
 .hero .description{
-    margin-top:8px;
     font-size:0.95rem;
-    color:#c7d2cc;
+    color:#b8c7bf;
 }
 
 /* GRID */
@@ -105,32 +95,15 @@ body::before{
     padding:20px;
 }
 
-/* LOCATION */
-.location{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:16px;
-}
-
-.flag{font-size:1.8rem;}
-.zone{color:#c6d3c9;font-size:.9rem;}
-
 /* CLOCK */
-.clock-wrap{
-    display:flex;
-    justify-content:center;
-    margin-bottom:12px;
-}
-
 .clock{
     width:170px;
     height:170px;
     background:#f7f2e9;
     border-radius:50%;
     position:relative;
+    margin:auto;
     border:7px solid #c8b48a;
-    box-shadow:inset 0 0 10px rgba(0,0,0,.2), 0 8px 18px rgba(0,0,0,.4);
 }
 
 /* NUMBERS */
@@ -174,7 +147,7 @@ body::before{
 
 .date{
     text-align:center;
-    color:#c7d2cc;
+    color:#bfcfc7;
     font-size:0.9rem;
 }
 
@@ -215,6 +188,9 @@ select{
 
 <body>
 
+<!-- 🌟 FAIRY LIGHTS -->
+<div class="lights" id="lights"></div>
+
 <div class="container">
 
 <div class="hero">
@@ -226,12 +202,9 @@ select{
 <div class="grid" id="grid"></div>
 
 <div class="converter">
-    <div class="converter-title">Quick Time Converter</div>
-
     <select id="from"></select>
     →
     <select id="to"></select>
-
     <div class="result" id="result"></div>
 </div>
 
@@ -252,28 +225,31 @@ const zones = [
 {flag:"🇩🇪",name:"Europe",timezone:"Europe/Berlin"}
 ];
 
-const grid = document.getElementById("grid");
+/* 🌟 FAIRY LIGHT GENERATOR */
+const lights=document.getElementById("lights");
+
+for(let i=0;i<25;i++){
+const d=document.createElement("div");
+d.className="light";
+d.style.left=Math.random()*100+"%";
+d.style.top=Math.random()*100+"px";
+d.style.animationDelay=Math.random()*3+"s";
+d.style.opacity=Math.random();
+lights.appendChild(d);
+}
 
 /* BUILD CLOCKS */
+const grid=document.getElementById("grid");
+
 zones.forEach((z,i)=>{
-grid.innerHTML += `
+grid.innerHTML+=`
 <div class="card">
 
-<div class="location">
-<div class="flag">${z.flag}</div>
-<div>
-<div>${z.name}</div>
-<div class="zone">${z.timezone}</div>
-</div>
-</div>
-
-<div class="clock-wrap">
 <div class="clock" id="clock-${i}">
 <div class="hand hour" id="h-${i}"></div>
 <div class="hand minute" id="m-${i}"></div>
 <div class="hand second" id="s-${i}"></div>
 <div class="center"></div>
-</div>
 </div>
 
 <div class="digital" id="d-${i}"></div>
@@ -282,14 +258,12 @@ grid.innerHTML += `
 </div>`;
 });
 
-/* CLOCK NUMBERS */
+/* NUMBERS */
 function placeNumbers(){
 document.querySelectorAll(".clock").forEach(clock=>{
-clock.querySelectorAll(".number").forEach(n=>n.remove());
-
-const size = clock.clientWidth;
-const center = size/2;
-const r = center * 0.78;
+const size=clock.clientWidth;
+const c=size/2;
+const r=c*0.78;
 
 for(let i=1;i<=12;i++){
 const n=document.createElement("div");
@@ -297,8 +271,8 @@ n.className="number";
 
 const angle=((i-3)*30)*(Math.PI/180);
 
-n.style.left=center+Math.cos(angle)*r+"px";
-n.style.top=center+Math.sin(angle)*r+"px";
+n.style.left=c+Math.cos(angle)*r+"px";
+n.style.top=c+Math.sin(angle)*r+"px";
 
 n.textContent=i;
 clock.appendChild(n);
@@ -306,12 +280,11 @@ clock.appendChild(n);
 });
 }
 
-/* CLOCK UPDATE */
+/* UPDATE */
 function update(){
 zones.forEach((z,i)=>{
 
 const now=new Date();
-
 const f=new Intl.DateTimeFormat('en-US',{
 timeZone:z.timezone,
 hour:'numeric',
@@ -330,62 +303,22 @@ document.getElementById(`h-${i}`).style.transform=`translateX(-50%) rotate(${(h%
 document.getElementById(`m-${i}`).style.transform=`translateX(-50%) rotate(${m*6}deg)`;
 document.getElementById(`s-${i}`).style.transform=`translateX(-50%) rotate(${s*6}deg)`;
 
-document.getElementById(`d-${i}`).innerText =
+document.getElementById(`d-${i}`).innerText=
 new Date().toLocaleTimeString('en-US',{timeZone:z.timezone,hour:'numeric',minute:'2-digit',hour12:true});
 
-document.getElementById(`date-${i}`).innerText =
+document.getElementById(`date-${i}`).innerText=
 new Date().toLocaleDateString('en-US',{timeZone:z.timezone,weekday:'long',month:'long',day:'numeric'});
 
 });
 }
 
-/* CONVERTER */
-function fill(){
-const from=document.getElementById("from");
-const to=document.getElementById("to");
-
-zones.forEach((z,i)=>{
-from.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
-to.innerHTML+=`<option value="${i}">${z.flag} ${z.name}</option>`;
-});
-
-from.value=0;
-to.value=4;
-}
-
-function convert(){
-const f=zones[from.value];
-const t=zones[to.value];
-
-const now=new Date();
-
-const ft=new Date(now.toLocaleString("en-US",{timeZone:f.timezone}));
-const tt=new Date(now.toLocaleString("en-US",{timeZone:t.timezone}));
-
-let diff=(tt-ft)/(1000*60*60);
-if(diff>12) diff-=24;
-if(diff<-12) diff+=24;
-
-document.getElementById("result").innerHTML=
-`${f.flag} ${f.name} → ${t.flag} ${t.name}<br>
-<b>${diff>=0?"+":""}${diff.toFixed(1)} hrs</b>`;
-}
-
+/* INIT */
 window.onload=()=>{
 placeNumbers();
 update();
-fill();
-convert();
 };
 
-setInterval(()=>{
-update();
-convert();
-},60000);
-
-document.addEventListener("change",e=>{
-if(e.target.id==="from"||e.target.id==="to") convert();
-});
+setInterval(update,60000);
 
 </script>
 
