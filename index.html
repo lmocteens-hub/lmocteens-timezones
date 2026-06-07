@@ -64,6 +64,14 @@ body{
     font-family:'Cormorant Garamond',serif;
     font-size:4.2rem;
     margin:0;
+    color:#f8f4eb;
+
+    text-shadow:
+        1px 1px 0 #d9b26f,
+       -1px 1px 0 #d9b26f,
+        1px -1px 0 #d9b26f,
+       -1px -1px 0 #d9b26f,
+        0 0 18px rgba(217,178,111,.35);
 }
 
 .hero .subtitle{
@@ -185,6 +193,12 @@ select{
     font-style:italic;
     font-size:0.95rem;
 }
+    .footer small{
+    display:block;
+    margin-top:6px;
+    color:#bfcfc7;
+    font-style:normal;
+}
 
 </style>
 </head>
@@ -215,7 +229,7 @@ select{
 </div>
 
 <div class="footer">
-    "From every nation, tribe, people and language."
+    "From every nation, tribe, people and language." Revelation 7:9
 </div>
 
 </div>
@@ -399,7 +413,7 @@ update();
 initConverter();
 };
 
-setInterval(update,60000);
+setInterval(update,1000);
 
 </script>
 
